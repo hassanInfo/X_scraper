@@ -16,9 +16,9 @@ This script is designed to scrape Twitter data based on provided keywords using 
 
 3. Run the script with the desired parameters
    ```bash
-    --keywords:  Search keywords for tweets.
+    --keywords: Search keywords for tweets.
     --n_post: Number of tweets to retrieve.
     --delay: Start date for retrieving tweets in the format 'YYYY-MM-DD'.
 4. Example
    ```bash
-    python main.py --keywords 'morocco maroc المغرب' --n_tweets 2 --start_date '2023-10-02'
+    python main.py --keywords 'morocco,maroc,المغرب' --n_tweets 300 --start_date '2023-10-02'
