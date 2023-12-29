@@ -3,18 +3,17 @@ import pandas as pd
 from ntscraper import Nitter
 
 class TwitterScraper:
-    def __init__(self, keywords, n_tweets=4, since=None):
+    def __init__(self, keyword, n_tweets=300):
         """
         Initialize the TwitterScraper instance.
 
         Parameters:
-        - keywords (str): The search keywords for tweets.
-        - n_tweets (int): The number of tweets to retrieve (default is 4).
+        - keyword (str): The search keyword for tweets.
+        - n_tweets (int): The number of tweets to retrieve (default is 300).
         - since (str): The start date for retrieving tweets in the format 'YYYY-MM-DD'.
         """
-        self.keywords = keywords
+        self.keyword = keyword
         self.n_tweets = n_tweets
-        self.since = since
         self.data = None
 
     def scrape_tweets(self):
@@ -23,11 +22,10 @@ class TwitterScraper:
         """
         try:
             scraper = Nitter(0)
-            tweets = scraper.get_tweets(self.keywords, number=self.n_tweets, since=self.since)
+            tweets = scraper.get_tweets(self.keyword, number=self.n_tweets)
 
             data = []
-            temp_list = tweets['tweets']
-            for tweet in temp_list:
+            for tweet in tweets['tweets']:
                 data.append({
                     'link': tweet['link'],
                     'text': tweet['text'],
@@ -55,7 +53,7 @@ class TwitterScraper:
                 os.makedirs(data_dir)
 
             # Save the DataFrame to a CSV file within the 'data' folder
-            csv_path = os.path.join(data_dir, 'X_data.csv')
+            csv_path = os.path.join(data_dir, f'X_data_{self.keyword}.csv')
             self.data.to_csv(csv_path, index=False)
         except Exception as e:
             print(f"Error while saving data to CSV: {e}")

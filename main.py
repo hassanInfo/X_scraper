@@ -1,5 +1,6 @@
 import argparse
 import pandas as pd
+from utils import merge_csv_files
 from x_scraper import TwitterScraper
 
 def parse_arguments():
@@ -20,9 +21,13 @@ def parse_arguments():
 if __name__ == "__main__":
     # Parse command-line arguments
     args = parse_arguments()
+    # Split keywords into a list if it's provided
+    keywords = args.keywords.split(',') if args.keywords else []
     # Create an instance of the TwitterScraper class
-    twitter_scraper = TwitterScraper(args.keywords, args.n_tweets, args.start_date)
+    for k in keywords:
+        twitter_scraper = TwitterScraper(k, args.n_tweets, args.start_date)
+        # Scrape tweets
+        twitter_scraper.scrape_tweets() 
+        twitter_scraper.save_data()
 
-    # Scrape tweets
-    twitter_scraper.scrape_tweets() 
-    twitter_scraper.save_data()
+    merge_csv_files('./data', 'X_data')
